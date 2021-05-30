@@ -58,7 +58,7 @@ object MyApp extends App {
   import scala.annotation.tailrec
   @tailrec def rec(acc: Int, n: Int): Int = {
     if (n == 0) acc
-    else rec(n - 1, n * acc)
+    else rec(n * acc, n - 1)
   }
 
   val curring2 = rec(1, _)
@@ -90,7 +90,7 @@ object MyApp extends App {
     def muge(): Unit = println("Muuuuu")
   }
 
-  class Vaca extends Animal("Vaca")
+  class Vaca() extends Animal("Vaca")
 
   object Vaca {
     def apply(): Vaca = new Vaca
@@ -98,18 +98,50 @@ object MyApp extends App {
     def apply(nome: String) : Animal = new Animal(nome)
   }
 
-  val novaVaca = Vaca()
+  val herbivoro = new Herbivoro {
+    override val nome: String = "Teste"
+    override val idade: Int = 2
 
-  val vaca = new Vaca() with Herbivoro {
-    override val idade: Int = 10
-
-    override def comePlantas(): Unit = println("ok")
+    override def comePlantas(): Unit = println("sim")
   }
+
+  val novaVaca = Vaca()
 
   def testeObject(vaca: Vaca.type): Vaca = vaca()
 
+  extension(vaca: Int)
+    def muge(): String = "muuuuuuuu"
+
   testeObject(Vaca)
 
-  vaca.isInstanceOf[Herbivoro]
-  vaca.nome
+  println(s"hamando extension function ${2.muge()}")
+
+  abstract class MyList[T] {
+    def come(animal: T) = println(animal)
+  }
+
+  class MyListOfVaca extends MyList[Animal]
+
+  val teste = new MyListOfVaca()
+  teste.come(new Vaca())
+
+  List[Int](2,3,4,5,6)
+  List("A", "B")
+
+  //======================================
+  abstract class Test
+  case class MyCaseClass(teste: String, idade: Int) extends Test
+  case class Teste(cidade: String) extends Test
+
+  val myCase = Teste("nome")
+
+  def meuMatch(caseClass: Test) = caseClass match {
+    case MyCaseClass("nome", 46) => s"objeto igual"
+    case MyCaseClass(teste, idade) => s"objeto igual: $teste - $idade"
+    case teste:MyCaseClass => s"MyCaseClass: $teste"
+    case test:Teste => s"MyCaseClass: $test"
+    case _ => s"default"
+  }
+
+  println(meuMatch(MyCaseClass("nome", 46)))
 }
