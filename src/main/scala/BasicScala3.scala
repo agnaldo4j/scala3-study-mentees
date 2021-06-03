@@ -56,12 +56,17 @@ object BasicScala3 {
 
     val teste: Option[Int] = None
 
-    val myOpt: Option[Int] = Some(1)
+    val myOpt: Option[Int] = None //Some(1)
     val pairs = for {
+      //generators
       num <- List(1,2,3)
       char <- List('a', 'b', 'c')
       optInt <- myOpt
-    } yield num + "-" + char + "-" + optInt
+      // definitions
+      n = optInt + 1
+      // filters
+      if optInt > 0
+    } yield num + "-" + char + "-" + optInt + "-" + n
     println(s"saida: $pairs")
   }
 }
