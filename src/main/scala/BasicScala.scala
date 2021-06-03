@@ -127,21 +127,4 @@ object MyApp extends App {
 
   List[Int](2,3,4,5,6)
   List("A", "B")
-
-  //======================================
-  abstract class Test
-  case class MyCaseClass(teste: String, idade: Int) extends Test
-  case class Teste(cidade: String) extends Test
-
-  val myCase = Teste("nome")
-
-  def meuMatch(caseClass: Test) = caseClass match {
-    case MyCaseClass("nome", 46) => s"objeto igual"
-    case MyCaseClass(teste, idade) => s"objeto igual: $teste - $idade"
-    case teste:MyCaseClass => s"MyCaseClass: $teste"
-    case test:Teste => s"MyCaseClass: $test"
-    case _ => s"default"
-  }
-
-  println(meuMatch(MyCaseClass("nome", 46)))
 }
