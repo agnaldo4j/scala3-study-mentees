@@ -1,22 +1,20 @@
-
 object TypeClassScala3 {
   case class Circle(radius: Double)
-
   case class Rectangle(width: Double, length: Double)
 
   trait Shape[A]:
     extension (shape: A)
-      def area(plus: Int): Double
+      def area(): Double
 
   given Shape[Circle] with
     extension (shape: Circle)
-      def area(plus: Int): Double = (math.Pi * math.pow(shape.radius, 2) + plus)
+      def area(): Double = math.Pi * math.pow(shape.radius, 2)
 
   given Shape[Rectangle] with
     extension (shape: Rectangle)
-      def area(plus: Int): Double = (shape.width * shape.length) + plus
+      def area(): Double = (shape.width * shape.length)
 
-  def areaOf[A: Shape](shape: A): Double = shape.area(10)
+  def areaOf[A: Shape](shape: A): Double = shape.area()
 }
 
 @main def mainTypeClassScala3 = {
