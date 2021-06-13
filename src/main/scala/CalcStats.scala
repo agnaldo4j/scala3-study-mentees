@@ -56,7 +56,7 @@ object CalcStats {
     }
   }
 
-  def main(args: Array[String]) = {
+  @main def mainCalcStats = {
     val calcStats = new CalcStats(List(6, 9, 15, -2, 92, 11))
 
     calcStats.calculate() match {
