@@ -26,10 +26,10 @@ object CalcStats {
       )
 
     def printStats() = {
-      println(s"min: ${min}")
-      println(s"max: ${max}")
-      println(s"size: ${size}")
-      println(s"avg: ${avg}")
+      println(s"min: ${min}")   // -2
+      println(s"max: ${max}")   // 92
+      println(s"size: ${size}") // 6
+      println(s"avg: ${avg}")   // 21.83
     }
   }
 
