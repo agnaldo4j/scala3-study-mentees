@@ -4,24 +4,26 @@ import java.sql.Connection
 import scala.annotation.tailrec
 
 package caseclass {
-  private[scala3] abstract class Test
+  abstract class BaseCaseClass
 
-  private[scala3] case class MyCaseClass(teste: String, idade: Int) extends Test
+  case class MyCaseClass(teste: String, idade: Int) extends Test
 
-  private[scala3] case class Teste(cidade: String) extends Test
+  case class MySecondCaseClass(cidade: String) extends Test
 
-  private[scala3] val myCase = Teste("nome")
-
-  object MyCaseClass {
-    def apply(): Test = MyCaseClass("nome", 46)
-  }
+  val myCase = MySecondCaseClass("nome")
 
   def meuMatch(caseClass: Test) = caseClass match {
     case myVal@MyCaseClass("nome", 46) => s"objeto igual $myVal"
-    case myVal@MyCaseClass(teste, idade) => s"objeto igual: $teste - $idade - ${myVal.teste} - ${caseClass.asInstanceOf[MyCaseClass].teste}"
+    case myVal@MyCaseClass(teste, idade) => {
+      s"objeto igual: $teste - $idade - ${myVal.teste} - ${caseClass.asInstanceOf[MyCaseClass].teste}"
+    }
     case teste: MyCaseClass => s"MyCaseClass: $teste"
-    case test: Teste => s"MyCaseClass: $test"
+    case test: MySecondCaseClass => s"MySecondCaseClass: $test"
     case _ => s"default"
+  }
+
+  @main def execute() = {
+    println(meuMatch(MyCaseClass("nome", 46)))
   }
 }
 
