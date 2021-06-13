@@ -18,36 +18,53 @@ For example: [6, 9, 15, -2, 92, 11]
 */
 object CalcStats {
 
-//  def main(args: Array[String]) = {
-//    val list = List(6, 9, 15, -2, 92, 11)
-//    val calc = new CalcStats(list)
-//
-//    println(s"min: ${calc.calc()}")
-//  }
-//
-//  class CalcStats(list: List[Int]) {
-//
-//
-//    def calc(): Either[Exception, (Int, Int, Int, Double)] = {
-//     Left(new IllegalStateException("teste"))
-//     Right((2,2,2, 2.0))
-//    }
-//
-//    @tailrec
-//    private def getMinimum(max, aver, totalEle, min: Int = list(0)): Int = {
-//      list match {
-//        case Nil => min
-//        case (head :: tail) => {
-//          getMinimum(tail, if (min < head) min else head)
-//          getMa
-//          getAve
-//          getTotalEle
-//        }
-//        case _ => 0
-//      }
-//    }
-//  }
+  case class Estatisticas(min: Int, max: Int, size: Int, sum: Double = 0.0) {
+    def avg: Double = sum / size
 
-//    def isListEmpty(list: Array[Int]): Boolean = list.isEmpty
+    def increment(next: Int): Estatisticas = copy(
+        min = if (min > next) next else min,
+        max = if (max < next) next else max,
+        sum = sum + next
+      )
 
+    def printStats() = {
+      println(s"min: ${min}")
+      println(s"max: ${max}")
+      println(s"size: ${size}")
+      println(s"avg: ${avg}")
+    }
+  }
+
+  object Estatisticas {
+    def apply(list: List[Int]): Estatisticas = Estatisticas(min = list.head, max = list.head, size = list.size)
+  }
+
+  class CalcStats(list: List[Int]) {
+    def calc(): Either[Exception, Estatisticas] = list match {
+      case Nil => Left(IllegalArgumentException("List must not be empty"))
+      case null => Left(IllegalArgumentException("List must not be null"))
+      case (head :: tail) => getEstatisticas(list, Estatisticas(list))
+      case _ => Left(IllegalArgumentException("Invalid Type"))
+    }
+
+    @tailrec
+    private def getEstatisticas(
+                                 list: List[Int],
+                                 estatisticas: Estatisticas
+                               ): Either[Exception, Estatisticas] = list match {
+      case Nil => Right(estatisticas)
+      case (head :: tail) => getEstatisticas(tail, estatisticas.increment(head))
+      case _ => Left(IllegalStateException("Invalid Type"))
+    }
+  }
+
+  def main(args: Array[String]) = {
+    val list = List(6, 9, 15, -2, 92, 11)
+    val calc = new CalcStats(list)
+
+    calc.calc() match {
+      case Right(estatisticas: Estatisticas) => estatisticas.printStats()
+      case Left(error) => println(s"error: ${error.getMessage}")
+    }
+  }
 }

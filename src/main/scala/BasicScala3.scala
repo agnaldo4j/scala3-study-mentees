@@ -6,13 +6,13 @@ import scala.annotation.tailrec
 package caseclass {
   abstract class BaseCaseClass
 
-  case class MyCaseClass(teste: String, idade: Int) extends Test
+  case class MyCaseClass(teste: String, idade: Int) extends BaseCaseClass
 
-  case class MySecondCaseClass(cidade: String) extends Test
+  case class MySecondCaseClass(cidade: String) extends BaseCaseClass
 
   val myCase = MySecondCaseClass("nome")
 
-  def meuMatch(caseClass: Test) = caseClass match {
+  def meuMatch(caseClass: BaseCaseClass) = caseClass match {
     case myVal@MyCaseClass("nome", 46) => s"objeto igual $myVal"
     case myVal@MyCaseClass(teste, idade) => {
       s"objeto igual: $teste - $idade - ${myVal.teste} - ${caseClass.asInstanceOf[MyCaseClass].teste}"
